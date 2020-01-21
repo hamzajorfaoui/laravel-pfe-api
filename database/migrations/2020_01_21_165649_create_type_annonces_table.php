@@ -14,7 +14,7 @@ class CreateTypeAnnoncesTable extends Migration
     public function up()
     {
         Schema::create('type_annonces', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id')->unique();
             $table->string('type');
             $table->timestamps();
         });

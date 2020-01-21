@@ -16,7 +16,7 @@ class CreateProfsTable extends Migration
         Schema::create('profs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('fullname');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('password');
             $table->timestamps();
         });

@@ -13,6 +13,7 @@ class CreateAnnoncesTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('annonces');
         Schema::create('annonces', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('date_prevue');
@@ -23,7 +24,11 @@ class CreateAnnoncesTable extends Migration
             $table->unsignedBigInteger('matiere_id');
             $table->unsignedBigInteger('prof_id');
             $table->timestamps();
+            $table->foreign('typeannonce_id')->references('id')->on('type_annonces');
+            $table->foreign('prof_id')->references('id')->on('profs');
+
         });
+  
     }
 
     /**
