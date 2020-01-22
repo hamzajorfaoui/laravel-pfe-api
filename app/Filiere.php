@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Filiere extends Model
 {
-    //
+    protected $table = 'filieres';
+
+    public function departement(){
+            return $this->belongsTo('App\Departement');
+    }
+    public function etudiant(){
+        return $this->hasMany('App\Filiere' , 'filiere_id' , 'id');
+    }
 }

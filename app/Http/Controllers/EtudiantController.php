@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Prof;
-use Validator;
-class ProfController extends Controller
+use App\Etudiant;
+use App\Filiere;
+
+class EtudiantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +15,14 @@ class ProfController extends Controller
      */
     public function index()
     {
-           return Prof::get();
+        return Etudiant::get();
     }
 
+    public function etudbyfiliere($filiere_id)
+    {
+        return Etudiant::WHERE('filiere_id',$filiere_id)
+                              ->get();
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -35,21 +41,17 @@ class ProfController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request -> all(),[
-        'email' => 'required|string|email|max:255|unique:profs',
-        'fullname' => 'required'
-       ]);
-       if ($validator -> fails()) {          
-           return response()->json(['error' => $validator->errors()]);   
-       }
+        $etudiant = new Etudiant;
+        $etudiant->fullname = $request->fullname;
+        $etudiant->cin	    = $request->cin;
+        $etudiant->cne      = $request->cne;
 
-        $prof = new Prof;
-        $prof->fullname=$request->fullname;
-        $prof->email=$request->email;
-        // $prof->password=$request->password;
-        $prof->save();
-        return response()->json(['succed' => "all is good"]); 
-
+        $filiere = Filiere::find($request->filiere_id);
+        if($filiere == null){
+        return response()->json(['error' => "departement not exist"]);  
+        }
+        $filiere->etudiant()->save($etudiant);
+        return response()->json(['succed' => "all is good"]);
     }
 
     /**
@@ -60,7 +62,7 @@ class ProfController extends Controller
      */
     public function show($id)
     {
-        return Prof::find($id);
+        return Etudiant::find($id);
     }
 
     /**
@@ -71,7 +73,7 @@ class ProfController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -83,11 +85,7 @@ class ProfController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $prof = Prof::find($id);
-        $prof->email = $request->email;
-        $prof->save();
-
-        return $prof;
+        //
     }
 
     /**
@@ -98,9 +96,6 @@ class ProfController extends Controller
      */
     public function destroy($id)
     {
-        $prof = Prof::find($id);
-        $prof->delete();
-
-        return response()->json(['succed' => "deleted succesfully"]); 
+        //
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Prof;
-use Validator;
-class ProfController extends Controller
+use App\Filiere;
+use App\Departement;
+class FillereController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class ProfController extends Controller
      */
     public function index()
     {
-           return Prof::get();
+       return Filiere::get();
     }
 
     /**
@@ -35,19 +35,14 @@ class ProfController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request -> all(),[
-        'email' => 'required|string|email|max:255|unique:profs',
-        'fullname' => 'required'
-       ]);
-       if ($validator -> fails()) {          
-           return response()->json(['error' => $validator->errors()]);   
-       }
+        $filiere = new Filiere;
+        $filiere->name = $request->name;
 
-        $prof = new Prof;
-        $prof->fullname=$request->fullname;
-        $prof->email=$request->email;
-        // $prof->password=$request->password;
-        $prof->save();
+        $dept = Departement::find($request->dept_id);
+        if($dept == null){
+        return response()->json(['error' => "departement not exist"]);  
+        }
+        $dept->filiere()->save($filiere);
         return response()->json(['succed' => "all is good"]); 
 
     }
@@ -60,7 +55,7 @@ class ProfController extends Controller
      */
     public function show($id)
     {
-        return Prof::find($id);
+        
     }
 
     /**
@@ -71,7 +66,7 @@ class ProfController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -83,11 +78,12 @@ class ProfController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $prof = Prof::find($id);
-        $prof->email = $request->email;
-        $prof->save();
+        $filiere = Filiere::find($id);
+        $filiere->name = $request->name;
+        $filiere->save();
 
-        return $prof;
+        return $filiere;
+
     }
 
     /**
@@ -98,9 +94,6 @@ class ProfController extends Controller
      */
     public function destroy($id)
     {
-        $prof = Prof::find($id);
-        $prof->delete();
-
-        return response()->json(['succed' => "deleted succesfully"]); 
+        //
     }
 }

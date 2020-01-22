@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Prof;
-use Validator;
-class ProfController extends Controller
+use App\Departement;
+class DepartementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class ProfController extends Controller
      */
     public function index()
     {
-           return Prof::get();
+       return Departement::get();
     }
 
     /**
@@ -35,21 +34,11 @@ class ProfController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request -> all(),[
-        'email' => 'required|string|email|max:255|unique:profs',
-        'fullname' => 'required'
-       ]);
-       if ($validator -> fails()) {          
-           return response()->json(['error' => $validator->errors()]);   
-       }
-
-        $prof = new Prof;
-        $prof->fullname=$request->fullname;
-        $prof->email=$request->email;
-        // $prof->password=$request->password;
-        $prof->save();
-        return response()->json(['succed' => "all is good"]); 
-
+        $dept = new Departement;
+        $dept->name=$request->name;
+        $dept->save();
+    
+        return $dept;
     }
 
     /**
@@ -60,7 +49,7 @@ class ProfController extends Controller
      */
     public function show($id)
     {
-        return Prof::find($id);
+        return Departement::find($id);
     }
 
     /**
@@ -71,7 +60,7 @@ class ProfController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -83,11 +72,11 @@ class ProfController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $prof = Prof::find($id);
-        $prof->email = $request->email;
-        $prof->save();
+        $dept =  Departement::find($id);
+        $dept->name=$request->name;
+        $dept->save();
 
-        return $prof;
+        return $dept;
     }
 
     /**
@@ -98,9 +87,6 @@ class ProfController extends Controller
      */
     public function destroy($id)
     {
-        $prof = Prof::find($id);
-        $prof->delete();
-
-        return response()->json(['succed' => "deleted succesfully"]); 
+        //
     }
 }

@@ -23,6 +23,12 @@ Route::post('login', 'AuthController@login');
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {
+    
+    Route::get('etudiant/etudbyfiliere/{filiere_id}','EtudiantController@etudbyfiliere');
 
-    Route::resource('prof', 'ProfController');
+    Route::resources(['prof'=> 'ProfController',
+                      'dept'=> 'DepartementController',
+                      'filiere'=> 'FillereController',
+                      'etudiant'=>'EtudiantController'
+                     ]);
 });
