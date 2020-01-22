@@ -13,11 +13,13 @@ class CreateProfsTable extends Migration
      */
     public function up()
     {
+
         Schema::create('profs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('fullname');
             $table->string('email');
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

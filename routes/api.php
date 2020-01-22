@@ -24,5 +24,5 @@ Route::post('login', 'AuthController@login');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
-
+    Route::resource('prof', 'ProfController');
 });

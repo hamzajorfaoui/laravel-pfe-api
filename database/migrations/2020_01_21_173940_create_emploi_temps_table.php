@@ -16,7 +16,7 @@ class CreateEmploiTempsTable extends Migration
         Schema::create('emploi_temps', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('temp');
-             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
