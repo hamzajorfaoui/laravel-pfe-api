@@ -50,6 +50,7 @@ class TempController extends BaseController
         if($file = $request->file('emploiExamen')){
             $name = time() . $file->getClientOriginalName();
             $file->move('examens', $name);
+            $emploiTemp->filiere_id = $request->filiere_id;
             $emploiTemp->temp = $name;
             $user->emploiTemps()->save($emploiTemp);
 

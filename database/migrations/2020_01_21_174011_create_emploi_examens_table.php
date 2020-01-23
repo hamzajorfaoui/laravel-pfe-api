@@ -17,6 +17,7 @@ class CreateEmploiExamensTable extends Migration
             $table->bigIncrements('id');
             $table->string('examen');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('filiere_id');
             $table->softDeletes();
             $table->timestamps();
         });

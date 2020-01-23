@@ -9,7 +9,7 @@ class EmploiExamen extends Model
     
     
     protected $fillable = [
-        'examen', 
+        'examen' ,'filiere_id'
     ];
 
 

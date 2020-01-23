@@ -9,7 +9,7 @@ class EmploiTemp extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'temp'
+        'temp','filiere_id'
     ];
 
     protected $uploadtm = '/temps/';

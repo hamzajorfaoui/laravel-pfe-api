@@ -51,6 +51,7 @@ class ExamenController extends BaseController
             $name = time() . $file->getClientOriginalName();
             $file->move('examens', $name);
             $emploiExamen->examen = $name;
+            $emploiExamen->filiere_id = $request->filiere_id;
             $user->emploiExamens()->save($emploiExamen);
 
             return response()->json(['succed' => " good"]);
