@@ -14,4 +14,7 @@ class Filiere extends Model
     public function etudiant(){
         return $this->hasMany('App\Filiere' , 'filiere_id' , 'id');
     }
+    public function annonce(){
+        return $this->hasMany('App\Annonce' , 'filiere_id' , 'id');
+    }
 }

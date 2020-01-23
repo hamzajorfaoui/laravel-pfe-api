@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Annonce;
+use App\Filiere;
+use App\Matiere;
+use App\Prof;
+use App\TypeAnnonce;
 use App\Http\Controllers\BaseController as BaseController ;
 class AnnoncesController extends BaseController
 {
@@ -49,21 +53,26 @@ class AnnoncesController extends BaseController
         $annonce->date_prevue         = $request->date_prevue;
         $annonce->date_auralieu	      = $request->date_auralieu;
         $annonce->salle               = $request->salle;
+        //id user
+        $annonce->user_id             = $id;
+        
         $annonce->typeannonce_id      = $request->typeannonce_id;
         $annonce->matiere_id          = $request->matiere_id;
         $annonce->prof_id             = $request->prof_id;
-
+        $annonce->filiere_id          = $request->filiere_id;
+        
 
         $mat = Matiere::find($request->matiere_id);
         $prof = Prof::find($request->prof_id);
         $type = TypeAnnonce::find($request->typeannonce_id);
+        $filiere = Filiere::find($request->filiere_id);
+ 
 
-
-        if($mat == null || $type == null || $prof == null){
+        if($mat == null || $type == null || $prof == null || $filiere == null){
         return response()->json(['error' => "something not exist"]);  
         }
         else {
-             $user->annonces()->save($annonce);
+            $user->annonces()->save($annonce);
             return $this->sendResponse($annonce, 'annonce is saved');
         }
 

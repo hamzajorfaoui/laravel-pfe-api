@@ -15,9 +15,11 @@ class CreateFilieresTable extends Migration
     {
         Schema::create('filieres', function (Blueprint $table) {
             $table->bigIncrements('id');
-             $table->string('name');
+            $table->string('name');
             $table->unsignedBigInteger('departement_id');
             $table->timestamps();
+
+            $table->foreign('departement_id')->references('id')->on('departements');
         });
     }
 

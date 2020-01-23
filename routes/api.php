@@ -32,7 +32,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
                       'etudiant'=>'EtudiantController'
                      ]);
 
-     Route::resources(['examen'=> 'ExamenController',
-                       'temps'=> 'TempController',
-                     ]);
+    
 });
+
+Route::resources(['examen'=> 'ExamenController',
+'temps'=> 'TempController',
+'annonce'=>'AnnoncesController'
+]);

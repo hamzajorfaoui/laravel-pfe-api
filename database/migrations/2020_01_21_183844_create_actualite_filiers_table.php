@@ -18,6 +18,9 @@ class CreateActualiteFiliersTable extends Migration
             $table->unsignedBigInteger('actualite_id');
             $table->unsignedBigInteger('filiere_id');
             $table->timestamps();
+
+            $table->foreign('actualite_id')->references('id')->on('actualites');
+            $table->foreign('filiere_id')->references('id')->on('filieres');
         });
     }
 

@@ -18,7 +18,11 @@ class CreateComptesTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->unsignedBigInteger('etudiant_id');
+            $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('etudiant_id')->references('id')->on('etudiants');
+     
         });
     }
 

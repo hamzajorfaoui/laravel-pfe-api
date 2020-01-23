@@ -20,6 +20,9 @@ class CreateEmploiExamensTable extends Migration
             $table->unsignedBigInteger('filiere_id');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('filiere_id')->references('id')->on('filieres');
         });
     }
 
