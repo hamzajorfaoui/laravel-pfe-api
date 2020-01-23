@@ -16,7 +16,8 @@ class CreateEmploiExamensTable extends Migration
         Schema::create('emploi_examens', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('examen');
-             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -31,4 +31,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
                       'filiere'=> 'FillereController',
                       'etudiant'=>'EtudiantController'
                      ]);
+
+     Route::resources(['examen'=> 'ExamenController',
+                       'temps'=> 'TempController',
+                     ]);
 });

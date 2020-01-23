@@ -39,18 +39,22 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-        public function usersable()
+    public function emploiExamens()
     {
-    return $this->morphTo();
+        return $this->hasMany('App\EmploiExamen');
     }
-    
-    public function country()
+
+    public function emploiTemps()
     {
-        return $this->hasOne('App\Country');
+        return $this->hasMany('App\EmploiTemp');
     }
+
+    public function annonces()
+    {
+        return $this->hasMany('App\Annonce');
+    }
+
     
-
-
 
 
     public function getJWTIdentifier()

@@ -17,6 +17,7 @@ class CreateEmploiTempsTable extends Migration
             $table->bigIncrements('id');
             $table->string('temp');
             $table->unsignedBigInteger('user_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
