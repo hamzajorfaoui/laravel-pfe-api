@@ -12,7 +12,7 @@ class Filiere extends Model
             return $this->belongsTo('App\Departement');
     }
     public function etudiant(){
-        return $this->hasMany('App\Filiere' , 'filiere_id' , 'id');
+        return $this->hasMany('App\Etudiant');
     }
     public function annonce(){
         return $this->hasMany('App\Annonce' , 'filiere_id' , 'id');
