@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Prof;
 use Validator;
-class ProfController extends Controller
+use App\Http\Controllers\BaseController as BaseController ;
+class ProfController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,24 @@ class ProfController extends Controller
     public function index()
     {
            return Prof::get();
+    }
+
+    public function search(Request $request)
+    {
+        if (  $request->column == 'fullname'   ) {
+
+
+             $list = Prof::where($request->column , 'like', '%' . $request->keyword . '%')->get(); 
+             return $this->sendResponse($list->toArray(), 'profs');
+
+        }else {
+
+             return response()->json(['error' => ""]);  
+            
+        }
+       
+
+        
     }
 
     /**

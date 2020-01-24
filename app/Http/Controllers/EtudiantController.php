@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Etudiant;
 use App\Filiere;
 
-class EtudiantController extends Controller
+use App\Http\Controllers\BaseController as BaseController ;
+class EtudiantController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -23,8 +24,26 @@ class EtudiantController extends Controller
         return Etudiant::WHERE('filiere_id',$filiere_id)
                               ->get();
     }
+    public function search(Request $request)
+    {
+        if ($request->column == 'cin' || $request->column == 'cne' || $request->column == 'fullname'   ) {
+
+
+             $list = Etudiant::where($request->column , 'like', '%' . $request->keyword . '%')->get(); 
+             return $this->sendResponse($list->toArray(), 'etudiants');
+
+        }else {
+
+             return response()->json(['error' => ""]);  
+            
+        }
+       
+
+        
+    }
+
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource. 
      *
      * @return \Illuminate\Http\Response
      */
@@ -98,4 +117,6 @@ class EtudiantController extends Controller
     {
         //
     }
+
+
 }
