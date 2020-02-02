@@ -42,7 +42,6 @@ class AnnoncesController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    
     {
 
         $id=auth('api')->user()->id;
@@ -55,7 +54,7 @@ class AnnoncesController extends BaseController
         $annonce->salle               = $request->salle;
         //id user
         $annonce->user_id             = $id;
-        
+
         $annonce->typeannonce_id      = $request->typeannonce_id;
         $annonce->matiere_id          = $request->matiere_id;
         $annonce->prof_id             = $request->prof_id;
@@ -76,9 +75,6 @@ class AnnoncesController extends BaseController
             return $this->sendResponse($annonce, 'annonce is saved');
         }
 
-
-
-       
     }
 
     /**

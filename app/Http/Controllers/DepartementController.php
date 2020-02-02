@@ -89,4 +89,14 @@ class DepartementController extends Controller
     {
         //
     }
+    public function nameexist($name)
+    {
+        $countname = Departement::where('name', $name)->count();
+
+        if ($countname == 0) {
+            return response()->json(['exist' => false]); 
+        }else{
+            return response()->json(['exist' => true]); 
+        }
+    }
 }

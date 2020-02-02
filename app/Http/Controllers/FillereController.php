@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Filiere;
 use App\Departement;
+use App\Http\Resources\FiliereCollection;
 class FillereController extends Controller
 {
     /**
@@ -14,7 +15,8 @@ class FillereController extends Controller
      */
     public function index()
     {
-       return Filiere::get();
+       return FiliereCollection::collection(Filiere::get());
+    //   return Departement::find(1)->filiere()->get();
     }
 
     /**
@@ -37,14 +39,14 @@ class FillereController extends Controller
     {
         $filiere = new Filiere;
         $filiere->name = $request->name;
-
+        $filiere->departement_id=$request->dept_id;
         $dept = Departement::find($request->dept_id);
         if($dept == null){
         return response()->json(['error' => "departement not exist"]);  
         }
-        $dept->filiere()->save($filiere);
-        return response()->json(['succed' => "all is good"]); 
 
+        $filiere->save();
+        return  FiliereCollection::collection(Filiere::where('id',$filiere->id)->get());  
     }
 
     /**
@@ -79,10 +81,15 @@ class FillereController extends Controller
     public function update(Request $request, $id)
     {
         $filiere = Filiere::find($id);
-        $filiere->name = $request->name;
+        if($request->name != null){
+           $filiere->name = $request->name; 
+        }
+        if($request->dept_id != null){
+           $filiere->departement_id=$request->dept_id; 
+        } 
         $filiere->save();
 
-        return $filiere;
+        return FiliereCollection::collection(Filiere::where('id',$filiere->id)->get());;
 
     }
 

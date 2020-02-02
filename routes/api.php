@@ -26,6 +26,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     
     Route::get('etudiant/etudbyfiliere/{filiere_id}','EtudiantController@etudbyfiliere');
 
+    Route::get('prof/profemail/{email}','ProfController@emailexist');
+    Route::get('prof/profemail/{id}/{email}','ProfController@emailexistUpdate');
+
+    Route::get('dept/deptname/{name}','DepartementController@nameexist');
+
     Route::resources(['prof'=> 'ProfController',
                       'dept'=> 'DepartementController',
                       'filiere'=> 'FillereController',
@@ -38,4 +43,3 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     'annonce'=>'AnnoncesController'
     ]);
 });
-
