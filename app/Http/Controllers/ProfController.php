@@ -67,7 +67,7 @@ class ProfController extends BaseController
         $prof->email=$request->email;
         // $prof->password=$request->password;
         $prof->save();
-        return response()->json(['succed' => "all is good"]); 
+        return response()->json($prof); 
 
     }
 
@@ -104,6 +104,7 @@ class ProfController extends BaseController
     {
         $prof = Prof::find($id);
         $prof->email = $request->email;
+        $prof->fullname = $request->fullname;
         $prof->save();
 
         return $prof;
@@ -119,7 +120,29 @@ class ProfController extends BaseController
     {
         $prof = Prof::find($id);
         $prof->delete();
-
         return response()->json(['succed' => "deleted succesfully"]); 
+    }
+
+    public function emailexist($email){
+       return $this->emailexistance($email);
+    }
+
+    protected function emailexistance($email){
+        $countemail = Prof::where('email', $email)->count();
+
+        if ($countemail == 0) {
+            return response()->json(['exist' => false]); 
+        }else{
+            return response()->json(['exist' => true]); 
+        }
+    }
+    public function emailexistUpdate($id , $email){
+        $countemail = Prof::where(['email'=> $email ,'id'=>$id])->count();
+
+        if ($countemail == 1) {
+            return response()->json(['exist' => false]); 
+        }else{
+            return $this->emailexistance($email); 
+        }
     }
 }

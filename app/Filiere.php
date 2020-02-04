@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Filiere extends Model
 {
     protected $table = 'filieres';
@@ -18,3 +19,5 @@ class Filiere extends Model
         return $this->hasMany('App\Annonce' , 'filiere_id' , 'id');
     }
 }
+
+
