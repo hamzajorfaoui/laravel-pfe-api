@@ -109,16 +109,24 @@ class EtudiantController extends BaseController
     {
 
         
-      $etudiant = Etudiant::find($id);
-      $etudiant->fullname = $request->fullname;
-      $etudiant->cin	    = $request->cin;
-      $etudiant->cne      = $request->cne;
-
+    $etudiant = Etudiant::find($id);
+    if($request->fullname != null){
+         $etudiant->fullname = $request->fullname;  
+    }
+     if($request->cin != null){
+        $etudiant->cin	    = $request->cin; 
+     }
+     if($request->cne != null){
+        $etudiant->cne      = $request->cne;
+     }
      $filiere = Filiere::find($request->filiere_id);
-        if($filiere == null){
-        return response()->json(['error' => "departement not exist"]);  
-        }
-        $filiere->etudiant()->save($etudiant);
+    //  if($request->filiere_id != null){
+    //     $filiere = Filiere::find($request->filiere_id);
+    //     if($filiere == null){
+    //     return response()->json(['error' => "departement not exist"]);  
+    //     }
+    //  }
+         $etudiant->save();
          return $this->sendResponse($etudiant, 'etudiant updated');
 
     }
