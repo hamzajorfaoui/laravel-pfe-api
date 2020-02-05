@@ -107,7 +107,20 @@ class EtudiantController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+
+        
+      $etudiant = Etudiant::find($id);
+      $etudiant->fullname = $request->fullname;
+      $etudiant->cin	    = $request->cin;
+      $etudiant->cne      = $request->cne;
+
+     $filiere = Filiere::find($request->filiere_id);
+        if($filiere == null){
+        return response()->json(['error' => "departement not exist"]);  
+        }
+        $filiere->etudiant()->save($etudiant);
+         return $this->sendResponse($etudiant, 'etudiant updated');
+
     }
 
     /**
@@ -120,6 +133,30 @@ class EtudiantController extends BaseController
     {
         //
     }
+
+    public function cneexiste($cne)
+    {
+        $etuds = Etudiant::where('cne', $cne)->count();
+
+        if ($etuds == 0) {
+            return response()->json(['exist' => false]); 
+        }else{
+            return response()->json(['exist' => true]); 
+        }
+    }
+
+    public function cinexiste($cin)
+    {
+        $etuds = Etudiant::where('cin', $cin)->count();
+
+        if ($etuds == 0) {
+            return response()->json(['exist' => false]); 
+        }else{
+            return response()->json(['exist' => true]); 
+        }
+    }
+
+
 
 
 }

@@ -26,6 +26,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     
 
     Route::get('etudiant/etudbyfiliere/{filiere_id}','EtudiantController@etudbyfiliere');
+
+    Route::get('etudiant/cneexiste/{cne}','EtudiantController@cneexiste');
+    Route::get('etudiant/cinexiste/{cin}','EtudiantController@cinexiste');
+
+
     Route::get('etudiant/search','EtudiantController@search');
      
     Route::get('prof/search','ProfController@search');
