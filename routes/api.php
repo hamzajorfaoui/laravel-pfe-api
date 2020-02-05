@@ -24,8 +24,10 @@ Route::post('login', 'AuthController@login');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     
+
     Route::get('etudiant/etudbyfiliere/{filiere_id}','EtudiantController@etudbyfiliere');
     Route::get('etudiant/search','EtudiantController@search');
+     
     Route::get('prof/search','ProfController@search');
 
     Route::get('prof/profemail/{email}','ProfController@emailexist');
@@ -44,4 +46,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     'temps'=> 'TempController',
     'annonce'=>'AnnoncesController'
     ]);
+
+    Route::get('departements','DepartementController@departementwithfiliers');
 });

@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Departement;
-class DepartementController extends Controller
+
+use App\Filiere;
+
+use App\Http\Controllers\BaseController as BaseController ;
+class DepartementController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -98,5 +102,14 @@ class DepartementController extends Controller
         }else{
             return response()->json(['exist' => true]); 
         }
+    }
+
+
+    public function departementwithfiliers()
+    {
+        $departements = Departement::with('filiere')->get();
+
+         return $this->sendResponse($departements->toArray(), 'departements');
+
     }
 }
