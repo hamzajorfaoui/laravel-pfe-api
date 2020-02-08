@@ -29,7 +29,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('etudiant/cneexiste/{cne}','EtudiantController@cneexiste');
     Route::get('etudiant/cinexiste/{cin}','EtudiantController@cinexiste');
-
+    Route::get('etudiantwithcompte/{id}','EtudiantController@etudiantwithcompte');
 
     Route::get('etudiant/search','EtudiantController@search');
      

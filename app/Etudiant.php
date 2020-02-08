@@ -12,7 +12,9 @@ class Etudiant extends Model
         'filiere_id'
     ];
 
-  
+      public function compte(){
+        return $this->hasOne('App\Compte');
+    }
 
     public function filiere(){
         return $this->belongsTo('App\Filiere','filiere_id');

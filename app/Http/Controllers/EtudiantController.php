@@ -163,7 +163,20 @@ class EtudiantController extends BaseController
             return response()->json(['exist' => true]); 
         }
     }
+    
+    
+    public function etudiantwithcompte($id){
+         $etudiant = Etudiant::with('compte')->find($id);
+         if($etudiant->compte != null){
+              return $this->sendResponse($etudiant, 'etudiant');
 
+         }
+         else {
+             
+             return response()->json(['message' => "no compte affected to this etudiant"]);
+         }
+        
+    }
 
 
 
