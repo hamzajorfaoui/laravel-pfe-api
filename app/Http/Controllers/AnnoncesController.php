@@ -127,4 +127,22 @@ class AnnoncesController extends BaseController
 
         $emploiTemp->delete();
     }
+
+    public function getData()
+    {
+         $filieres = Filiere::all();
+         $matieres = Matiere::all();
+         $profs = Prof::all();
+         $types = TypeAnnonce::all();
+
+
+
+       return response()->json(['filieres' => $filieres,
+       'matieres' => $matieres,
+       'profs' => $profs,
+       'types' => $types
+       ]);  
+        
+ 
+    }
 }
