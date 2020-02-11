@@ -10,6 +10,7 @@ use App\Filiere;
 use App\Matiere;
 use App\Prof;
 use App\TypeAnnonce;
+use App\Http\Resources\AnnonceCollection;
 use App\Http\Controllers\BaseController as BaseController ;
 class AnnoncesController extends BaseController
 {
@@ -21,8 +22,8 @@ class AnnoncesController extends BaseController
     public function index()
     {
         $annonces = Annonce::all();
-
-        return $this->sendResponse($annonces->toArray(), 'stores Of user');
+        return AnnonceCollection::collection($annonces);
+       
     }
 
     /**
