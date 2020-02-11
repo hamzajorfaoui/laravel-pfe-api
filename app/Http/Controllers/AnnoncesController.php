@@ -147,7 +147,12 @@ class AnnoncesController extends BaseController
  
     }
 
-    public function annoncesbyfillier(){
+    public function annoncesbyfillier($id_fil){
+
+
+         $anonces = Annonce::where('filiere_id',$id_fil)->get();
+         return AnnonceCollection::collection($anonces);
+
 
     }
 }

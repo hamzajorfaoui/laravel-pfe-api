@@ -25,8 +25,9 @@ Route::post('login', 'AuthController@login');
 Route::group(['middleware' => ['jwt.verify']], function() {
     
     Route::get('data/getData/{filiere_id}','AnnoncesController@getData');
-
     Route::get('etudiant/etudbyfiliere/{filiere_id}','EtudiantController@etudbyfiliere');
+
+    Route::get('annonce/annoncesbyfillier/{id_fil}','AnnoncesController@annoncesbyfillier');
 
     Route::get('etudiant/cneexiste/{cne}','EtudiantController@cneexiste');
     Route::get('etudiant/cinexiste/{cin}','EtudiantController@cinexiste');
