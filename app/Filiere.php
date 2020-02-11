@@ -18,6 +18,13 @@ class Filiere extends Model
     public function annonce(){
         return $this->hasMany('App\Annonce' , 'filiere_id' , 'id');
     }
+        public function matiere(){
+        return $this->hasMany('App\Matiere' , 'matiere_id' , 'id');
+    }
+    public function actualite()
+    {
+        return $this->belongsToMany('App\Actualite','actualite_filiers', 'actualite_id', 'filiere_id');
+    }
 }
 
 

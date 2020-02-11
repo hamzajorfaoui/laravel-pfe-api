@@ -24,7 +24,7 @@ Route::post('login', 'AuthController@login');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     
-    Route::get('data/getData','AnnoncesController@getData');
+    Route::get('data/getData/{filiere_id}','AnnoncesController@getData');
 
     Route::get('etudiant/etudbyfiliere/{filiere_id}','EtudiantController@etudbyfiliere');
 
@@ -50,8 +50,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::resources([
     'examen'=> 'ExamenController',
     'temps'=> 'TempController',
-    'annonce'=>'AnnoncesController'
-    ]);
+    'annonce'=>'AnnoncesController',
+    'matiere' => 'MatiereController',
+    
+    'actualite' => 'ActualiteController'
 
+    ]);
+    Route::get('filier/matieres/{id}','MatiereController@matiersbyfilier');
+    
     Route::get('departements','DepartementController@departementwithfiliers');
 });
