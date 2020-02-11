@@ -73,7 +73,8 @@ class AnnoncesController extends BaseController
         }
         else {
             $user->annonces()->save($annonce);
-            return $this->sendResponse($annonce, 'annonce is saved');
+            // return $this->sendResponse($annonce, 'annonce is saved');
+            return AnnonceCollection::collection(Annonce::where('id',$annonce->id)->get());;
         }
 
     }
