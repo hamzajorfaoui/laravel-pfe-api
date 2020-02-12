@@ -7,6 +7,7 @@ use App\Filiere;
 use App\Matiere;
 use App\User;
 use App\Actualite;
+use App\Http\Resources\ActualiteCollection;
 
 class ActualiteController extends Controller
 {
@@ -18,6 +19,12 @@ class ActualiteController extends Controller
     public function index()
     {
         //
+    
+        
+
+
+        $actualites = Actualite::all();
+        return ActualiteCollection::collection($actualites);
     }
 
     /**
@@ -73,7 +80,8 @@ class ActualiteController extends Controller
      */
     public function show($id)
     {
-        //
+         
+        return $actualite = Actualite::find($id);
     }
 
     /**
@@ -96,7 +104,18 @@ class ActualiteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $actualite = Actualite::find($id);
+        $actualite->title = $request->title;
+        $actualite->contenu = $request->contenu;
+        $actualite->save();
+
+         return $actualite ;
+
+    }
+    public function actualitesbyfillier($id_fil){
+
+        // $actualities = Actualite::with('filiere_id',$id_fil)->get();
+        // return ActualiteCollection::collection($actualities);
     }
 
     /**
