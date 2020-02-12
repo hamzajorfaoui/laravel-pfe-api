@@ -16,8 +16,8 @@ class CreateAnnoncesTable extends Migration
         Schema::dropIfExists('annonces');
         Schema::create('annonces', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('date_prevue');
-            $table->date('date_auralieu');
+            $table->timestamp('date_prevue');
+            $table->timestamp('date_auralieu');
             $table->string('salle');
             $table->unsignedBigInteger('typeannonce_id');
             $table->unsignedBigInteger('user_id');

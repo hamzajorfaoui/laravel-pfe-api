@@ -12,6 +12,8 @@ use App\Prof;
 use App\TypeAnnonce;
 use App\Http\Resources\AnnonceCollection;
 use App\Http\Controllers\BaseController as BaseController ;
+
+use DateTime;
 class AnnoncesController extends BaseController
 {
     /**
@@ -123,11 +125,8 @@ class AnnoncesController extends BaseController
     public function destroy($id)
     {
         $annonce = Annonce::findOrFail($id);
-
-        
-
-
-        $emploiTemp->delete();
+        $annonce->delete();
+        return response()->json(['succes' => true]);
     }
 
     public function getData($id)
