@@ -130,7 +130,7 @@ class AnnoncesController extends BaseController
     }
 
     public function getData($id)
-    {
+    { 
          
          $matieres = Matiere::where('filiere_id',$id)->get();;
          $profs = Prof::all();
