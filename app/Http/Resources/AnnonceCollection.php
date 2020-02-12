@@ -26,7 +26,7 @@ class AnnonceCollection extends JsonResource
             'date_auralieu' => $this->date_auralieu,
             'salle' => $this->salle,
             'user' => User::find($this->user_id)->name,
-            'typeannonce' => TypeAnnonce::find($this->user_id)->type,
+            'typeannonce' => TypeAnnonce::find($this->typeannonce_id)->type,
             'matiere' => Matiere::find($this->matiere_id)->name,
             'prof' => Prof::find($this->prof_id)->fullname,
             'filiere' => Filiere::find($this->filiere_id)->name,
