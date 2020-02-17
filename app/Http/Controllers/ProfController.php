@@ -20,17 +20,13 @@ class ProfController extends BaseController
 
     public function search(Request $request)
     {
-        if (  $request->column == 'fullname'   ) {
+        
 
 
-             $list = Prof::where($request->column , 'like', '%' . $request->keyword . '%')->get(); 
+             $list = Prof::where('fullname', 'like', '%' . $request->keyword . '%')->get(); 
              return $this->sendResponse($list->toArray(), 'profs');
 
-        }else {
-
-             return response()->json(['error' => ""]);  
-            
-        }
+       
        
 
         

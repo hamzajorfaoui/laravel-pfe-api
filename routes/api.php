@@ -60,4 +60,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('filier/matieres/{id}','MatiereController@matiersbyfilier');
     
     Route::get('departements','DepartementController@departementwithfiliers');
+
+    Route::get('me','AuthController@me');
+
 });

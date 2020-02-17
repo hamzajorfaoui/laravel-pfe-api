@@ -105,11 +105,15 @@ class ActualiteController extends Controller
     public function update(Request $request, $id)
     {
         $actualite = Actualite::find($id);
-        $actualite->title = $request->title;
-        $actualite->contenu = $request->contenu;
+        if($request->title != null){
+            $actualite->title = $request->title;
+        }
+        if($request->contenu != null){
+            $actualite->contenu = $request->contenu;
+        }
         $actualite->save();
 
-         return $actualite ;
+        return ActualiteCollection::collection(Actualite::where('id',$actualite->id)->get());
 
     }
     public function actualitesbyfillier($id_fil){
@@ -126,6 +130,8 @@ class ActualiteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $actualite = Actualite::findOrFail($id);
+        $actualite->delete();
+        return response()->json(['succes' => true]);
     }
 }
