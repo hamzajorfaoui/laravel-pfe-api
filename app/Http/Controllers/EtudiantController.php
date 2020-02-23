@@ -71,7 +71,7 @@ class EtudiantController extends BaseController
         $user->email = $request->cne .'@ests.com';
         $user->password = Str::random(8);
 
-        $user->role_id = $request->get('role_id');  
+        $user->role_id = 2;  
         $filiere = Filiere::find($request->filiere_id);
         if($filiere == null){
         return response()->json(['error' => "departement not exist"]);  
@@ -176,8 +176,8 @@ class EtudiantController extends BaseController
     
     public function etudiantwithcompte($id){
         
-         $etudiant = User::with('etudiant')->find($id);
-         return $this->sendResponse($etudiant, 'etudiant');
+         $etudiant = Etudiant::with('user')->find($id);
+         return $etudiant;
         
     }
 

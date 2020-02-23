@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Prof;
 use App\User;
+use App\Http\Resources\ProfCollection;
 use Validator;
 use App\Http\Controllers\BaseController as BaseController ;
 class ProfController extends BaseController
@@ -16,7 +17,8 @@ class ProfController extends BaseController
      */
     public function index()
     {
-           return Prof::get();
+           return ProfCollection::collection(Prof::all());
+           // return Prof::get();
     }
 
     public function search(Request $request)
