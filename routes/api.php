@@ -23,7 +23,8 @@ Route::post('login', 'AuthController@login');
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    
+    Route::get('refresh','AuthController@refresh');
+
     Route::get('data/getData/{filiere_id}','AnnoncesController@getData');
     Route::get('etudiant/etudbyfiliere/{filiere_id}','EtudiantController@etudbyfiliere');
 

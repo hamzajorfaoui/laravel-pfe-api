@@ -61,12 +61,13 @@ class ProfController extends BaseController
 
   
         $user = new User; 
-        $user->role_id = $request->get('role_id');              
+        $user->role_id = 2;              
             
         $user->email = $request->get('email');
-        $user->password = bcrypt($request->get('password'));
+        // $user->password = bcrypt($request->get('password'));
         $user->save();
         $prof = $user->prof()->create([
+                'phone' => $request->phone,
                 'fullname'   => $request->fullname,
                 'departement_id'   => $request->departement_id,
          ]);
