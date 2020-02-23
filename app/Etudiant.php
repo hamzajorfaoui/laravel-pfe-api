@@ -12,8 +12,9 @@ class Etudiant extends Model
         'filiere_id'
     ];
 
-      public function compte(){
-        return $this->hasOne('App\Compte');
+        public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 
     public function filiere(){

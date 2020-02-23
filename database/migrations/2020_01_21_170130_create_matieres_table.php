@@ -18,6 +18,8 @@ class CreateMatieresTable extends Migration
             $table->string('name');
             $table->unsignedBigInteger('filiere_id');
             $table->timestamps();
+
+            $table->foreign('filiere_id')->references('id')->on('filieres');
         });
     }
 

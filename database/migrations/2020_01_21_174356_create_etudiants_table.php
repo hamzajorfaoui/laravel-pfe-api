@@ -19,8 +19,12 @@ class CreateEtudiantsTable extends Migration
             $table->string('cin');
             $table->string('cne');
             $table->unsignedBigInteger('filiere_id');
+            $table->unsignedBigInteger('user_id');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('filiere_id')->references('id')->on('filieres');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

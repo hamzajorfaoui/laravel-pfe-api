@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Prof;
+use App\User;
 use Validator;
 use App\Http\Controllers\BaseController as BaseController ;
 class ProfController extends BaseController
@@ -51,19 +52,29 @@ class ProfController extends BaseController
     public function store(Request $request)
     {
         $validator = Validator::make($request -> all(),[
-        'email' => 'required|string|email|max:255|unique:profs',
+       
         'fullname' => 'required'
        ]);
        if ($validator -> fails()) {          
            return response()->json(['error' => $validator->errors()]);   
        }
 
-        $prof = new Prof;
-        $prof->fullname=$request->fullname;
-        $prof->email=$request->email;
-        // $prof->password=$request->password;
-        $prof->save();
-        return response()->json($prof); 
+  
+        $user = new User; 
+        $user->role_id = $request->get('role_id');              
+            
+        $user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
+        $user->save();
+        $prof = $user->prof()->create([
+                'fullname'   => $request->fullname,
+                'departement_id'   => $request->departement_id,
+         ]);
+
+
+
+
+        return response()->json([$user,$prof]); 
 
     }
 
@@ -98,12 +109,20 @@ class ProfController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $prof = Prof::find($id);
-        $prof->email = $request->email;
-        $prof->fullname = $request->fullname;
-        $prof->save();
 
-        return $prof;
+
+        
+
+        $user = User::find($id);
+        $prof=$user->prof;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $prof->fullname = $request->fullname;
+        $prof->departement_id = $request->departement_id;
+        $prof->phone = $request->phone;
+        $user->prof()->save($prof);
+
+        return User::with('prof')->find($id);
     }
 
     /**
@@ -114,8 +133,8 @@ class ProfController extends BaseController
      */
     public function destroy($id)
     {
-        $prof = Prof::find($id);
-        $prof->delete();
+        $user = User::find($id);
+        $user->delete();
         return response()->json(['succed' => "deleted succesfully"]); 
     }
 
@@ -124,7 +143,7 @@ class ProfController extends BaseController
     }
 
     protected function emailexistance($email){
-        $countemail = Prof::where('email', $email)->count();
+        $countemail = User::where('email', $email)->count();
 
         if ($countemail == 0) {
             return response()->json(['exist' => false]); 
@@ -133,7 +152,7 @@ class ProfController extends BaseController
         }
     }
     public function emailexistUpdate($id , $email){
-        $countemail = Prof::where(['email'=> $email ,'id'=>$id])->count();
+        $countemail = User::where(['email'=> $email ,'id'=>$id])->count();
 
         if ($countemail == 1) {
             return response()->json(['exist' => false]); 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateComptesTable extends Migration
+class CreateDepartementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,11 @@ class CreateComptesTable extends Migration
      */
     public function up()
     {
-        Schema::create('comptes', function (Blueprint $table) {
+        Schema::create('departements', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('email');
-            $table->string('password');
-            $table->unsignedBigInteger('etudiant_id');
-            $table->softDeletes();
+            $table->string('name');
+             $table->unsignedBigInteger('chefdep_id')->nullable();
             $table->timestamps();
-
-            $table->foreign('etudiant_id')->references('id')->on('etudiants');
-     
         });
     }
 
@@ -33,6 +28,6 @@ class CreateComptesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comptes');
+        Schema::dropIfExists('departements');
     }
 }

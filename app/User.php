@@ -41,6 +41,19 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    public function prof()
+    {
+        return $this->hasOne('App\Prof', 'user_id', 'id');
+    }
+        public function etudiant()
+    {
+        return $this->hasOne('App\Etudiant', 'user_id', 'id');
+    }
+     public function admin()
+    {
+        return $this->hasOne('App\Admin', 'user_id', 'id');
+    }
 
     public function emploiExamens()
     {

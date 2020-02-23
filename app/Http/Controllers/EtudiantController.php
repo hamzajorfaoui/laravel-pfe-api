@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Etudiant;
 use App\Filiere;
+use App\User;
+use Illuminate\Support\Str;
 
 use App\Http\Controllers\BaseController as BaseController ;
 class EtudiantController extends BaseController
@@ -64,13 +66,19 @@ class EtudiantController extends BaseController
         $etudiant->fullname = $request->fullname;
         $etudiant->cin	    = $request->cin;
         $etudiant->cne      = $request->cne;
+        $user = new User;
+        
+        $user->email = $request->cne .'@ests.com';
+        $user->password = Str::random(8);
 
+        $user->role_id = $request->get('role_id');  
         $filiere = Filiere::find($request->filiere_id);
         if($filiere == null){
         return response()->json(['error' => "departement not exist"]);  
         }else{
         $etudiant->filiere_id=$request->filiere_id;
-        $etudiant->save();
+         $user->save();
+        $user->etudiant()->save($etudiant);
         return $etudiant;  
         }
         
@@ -108,8 +116,9 @@ class EtudiantController extends BaseController
     public function update(Request $request, $id)
     {
 
-        
-    $etudiant = Etudiant::find($id);
+     
+
+    $etudiant = Etudiant::where('user_id', $id);
     if($request->fullname != null){
          $etudiant->fullname = $request->fullname;  
     }
@@ -166,7 +175,8 @@ class EtudiantController extends BaseController
     
     
     public function etudiantwithcompte($id){
-         $etudiant = Etudiant::with('compte')->find($id);
+        
+         $etudiant = User::with('etudiant')->find($id);
          return $this->sendResponse($etudiant, 'etudiant');
         
     }

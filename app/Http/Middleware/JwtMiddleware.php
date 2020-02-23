@@ -33,7 +33,15 @@ class JwtMiddleware  extends BaseMiddleware
                 return $this->JWTresponse('Token is Invalid');
                
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                return $this->JWTresponse('Token is Expired');
+             
+             /*  $refreshed = JWTAuth::refresh(JWTAuth::getToken());
+               
+               $user = JWTAuth::setToken($refreshed)->toUser();
+                
+                ///header('Authorization: Bearer ' . $refreshed);
+
+              $response = $next($request);*/
+             return  $this->JWTresponse('Authorization Token TokenExpiredException');
                 
             }else{
                 return $this->JWTresponse('Authorization Token not found');
