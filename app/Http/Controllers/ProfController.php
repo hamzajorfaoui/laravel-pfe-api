@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Prof;
 use App\User;
+
+
+use App\Departement;
 use App\Http\Resources\ProfCollection;
 use Validator;
 use App\Http\Controllers\BaseController as BaseController ;
@@ -66,6 +69,11 @@ class ProfController extends BaseController
         $user->role_id = 2;              
             
         $user->email = $request->get('email');
+
+         $dept = Departement::find($request->departement_id);
+        if($dept == null){
+        return response()->json(['error' => "departement not exist"]);  
+        }
         // $user->password = bcrypt($request->get('password'));
         $user->save();
         $prof = $user->prof()->create([
@@ -77,7 +85,7 @@ class ProfController extends BaseController
 
 
 
-        return response()->json([$user,$prof]); 
+        return ProfCollection::collection( Prof::where('id',$prof->id)->get());
 
     }
 
@@ -113,19 +121,37 @@ class ProfController extends BaseController
     public function update(Request $request, $id)
     {
 
-
-        
-
         $user = User::find($id);
-        $prof=$user->prof;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $prof->fullname = $request->fullname;
-        $prof->departement_id = $request->departement_id;
-        $prof->phone = $request->phone;
-        $user->prof()->save($prof);
+        $prof = $user->prof;
+        
+      
+       if ($req = $request->email ) {
+             $user->email = $request->email;
+        }
 
-        return User::with('prof')->find($id);
+          if ($req = $request->fullname ) {
+             $prof->fullname = $request->fullname;
+        }
+         if ($req = $request->departement_id ) {
+             $dept = Departement::find($request->departement_id);
+        if($dept == null){
+        return response()->json(['error' => "departement not exist"]);  
+        }else {
+             $prof->departement_id = $request->departement_id;
+        }
+           
+        }
+          if ($req = $request->phone ) {
+             $prof->phone = $request->phone;
+
+        }
+    
+       
+  
+        $user->save();
+        $user->prof()->save($prof);
+       
+        return  ProfCollection::collection( Prof::where('id',$prof->id)->get());
     }
 
     /**

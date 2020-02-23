@@ -40,7 +40,18 @@ class ExamenController extends BaseController
     public function store(Request $request)
     {
 
-        
+      $file_src=$request->file("upload_file"); //file src
+      $is_file_uploaded = Storage::disk('dropbox')->put('public-uploads',$file_src);
+     if($is_file_uploaded){
+    return response()->json(['succed' => " good"]);
+     } else {
+     return response()->json(['error' => "err"]); 
+      } 
+
+
+
+
+       /* 
           $id=auth('api')->user()->id;
 
           $user = User::find($id);
@@ -60,7 +71,7 @@ class ExamenController extends BaseController
         }else {
             return response()->json(['error' => "err"]);  
             
-        }
+        }*/
     }
 
     /**
