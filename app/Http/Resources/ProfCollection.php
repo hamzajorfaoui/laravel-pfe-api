@@ -21,6 +21,8 @@ class ProfCollection extends JsonResource
             'name' => $this->fullname,
             'email' => User::find($this->user_id)->email,
             'fullname' => $this->fullname,
+            'phone' => $this->phone,
+            'departement_id' => $this->departement_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deptname' => Departement::find($this->departement_id)->name,

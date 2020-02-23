@@ -71,7 +71,7 @@ class EtudiantController extends BaseController
         $user->email = $request->cne .'@ests.com';
         $user->password = Str::random(8);
 
-        $user->role_id = 2;  
+        $user->role_id = 3;  
         $filiere = Filiere::find($request->filiere_id);
         if($filiere == null){
         return response()->json(['error' => "departement not exist"]);  
