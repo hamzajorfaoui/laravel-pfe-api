@@ -12,7 +12,7 @@ use JWTAuth;
 use Validator;
 use Response;
 
-
+use Illuminate\Support\Facades\Storage;
 class AuthController extends Controller
 {
     /**
@@ -43,10 +43,10 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
         //   JWTAuth::factory()->setTTL(1);
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = JWTAuth::attempt($credentials)) {
+
             return response()->json(['error' => 'Email or password does\'t exist'], 401);
         }
-
 
 
 
@@ -80,6 +80,11 @@ class AuthController extends Controller
            
            
         return $this->login($request);
+    }
+
+        public function uplaoder(Request $request)
+    {
+       Storage::disk('s3')->put('test.txt', 'Hello World');
     }
 
     /**
@@ -119,11 +124,13 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+
         return response()->json([
             'access_token' => $token,
+       
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL(),
-            'user' => auth()->user()->admin->fullname
+            'user' =>  JWTAuth::user()->role_id
         ]);
     }
 }

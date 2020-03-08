@@ -3,15 +3,12 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
 use JWTAuth;
 use Exception;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 use App\Http\Controllers\BaseController as BaseController ;
 
-
-
-class JwtMiddleware  extends BaseMiddleware
+class ProfMiddleware extends BaseMiddleware
 {
     /**
      * Handle an incoming request.
@@ -48,11 +45,11 @@ class JwtMiddleware  extends BaseMiddleware
               
             }
         }
-         if ( JWTAuth::user()->role_id == 1) {
+         if ( JWTAuth::user()->role_id == 2) {
              return $next($request);
          }
          else {
-             return $this->JWTresponse('Authorization not for u');
+             return $this->JWTresponse('u are not prof');
          }
 
        

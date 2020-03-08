@@ -19,7 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //*******************||   Authentification    ||***********************
 Route::post('signup', 'AuthController@signup');
+Route::post('uplaoder', 'AuthController@uplaoder');
 Route::post('login', 'AuthController@login');
+Route::post('etudiant/login', 'EtudiantController@login');
+Route::post('etudiant/sendcodetoemail', 'EtudiantController@sendcodetoemail');
+Route::post('etudiant/verfiyemail', 'EtudiantController@verfiyemail');
+Route::post('etudiant/upetudiant', 'EtudiantController@upetudiant');
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {
@@ -64,4 +69,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('me','AuthController@me');
 
+});
+Route::group(['middleware' => ['jwt.etudiant']], function() {
+
+   Route::post('etudiant/etudiantest', 'EtudiantController@etudiantest');
+   
 });

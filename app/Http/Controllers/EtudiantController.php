@@ -7,6 +7,15 @@ use App\Etudiant;
 use App\Filiere;
 use App\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\SignUpRequest;
+use Mail;
+use App\Verification;
+use JWTFactory;
+use JWTAuth;
+use Validator;
+use Response;
 
 use App\Http\Controllers\BaseController as BaseController ;
 class EtudiantController extends BaseController
@@ -180,6 +189,182 @@ class EtudiantController extends BaseController
          return $etudiant;
         
     }
+
+
+
+    public function login(Request $request)
+    {
+
+ 
+        $validator = Validator::make($request -> all(),[
+            'email' => 'required|string|email|max:255',
+            'password'=> 'required'
+           ]);
+           if ($validator -> fails()) {
+               # code...
+               return response()->json(['error' => $validator->errors()]);
+          
+               
+           }
+         
+
+          if (strpos($request->email, '@ests.com') !== false) {
+                           
+
+
+
+
+
+
+            $user = User::where('email','=',$request->email)
+                        ->where('password','=',$request->password)
+                        ->first();
+            if ($user == null) {
+            return response()->json(['error' => 'Email or password does\'t exist'], 401);
+            }else {
+                return response()->json(['etudiant' => $user] );
+            }
+
+        }else {
+
+        $credentials = request(['email', 'password']);
+        //   JWTAuth::factory()->setTTL(1);
+        if (!$token = JWTAuth::attempt($credentials)) {
+
+            return response()->json(['error' => 'Email or password does\'t exist'], 401);
+        }
+        return $this->respondWithToken($token);
+            
+        }
+     
+
+    }
+
+        public function me()
+    {
+        return response()->json(auth()->user());
+    }
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        auth()->logout();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+
+        return response()->json([
+            'access_token' => $token,
+           
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL(),
+            'user' =>  auth()->user()
+        ]);
+    }
+
+
+    protected function sendcodetoemail(Request $request)
+    {
+
+        $verification_code = Str::random(5);
+
+        $iduser = $request->id;
+        $verf = new Verification;
+        $verf->code = $verification_code;
+
+        $user = User::find($iduser);
+
+
+
+        if ($user != null) {
+           $user->verifications()->save($verf);
+
+
+
+        $to_name = $request->name;
+        $to_email = $request->email;
+
+    
+         Mail::send('emails.mail', ['name' => $to_name, 'verification_code' => $verification_code], function($message) use ($to_name, $to_email) {
+             $message->to($to_email)
+                     ->subject('Artisans Web Testing Mail');
+             $message->from('estsupp@gmail.com');
+          });
+
+           return 'email verfication sended';
+        }else {
+             return 'user not found';
+            
+        }
+         
+
+    }
+
+    protected function verfiyemail(Request $request)
+    {
+        $iduser = $request->id;
+        $code = $request->code;
+        $user = User::find($iduser);
+        $verf = Verification::where('user_id',$user->id)->first();
+       if ($verf == null) {
+        return response()->json(['err' => "err"] );
+        }
+        if ($verf->code == $code ) {
+            return response()->json(['is_verfied' => true] );
+        }else {
+            return response()->json(['is_verfied' => false] );
+        }
+
+
+
+ 
+    }
+
+    protected function upetudiant(Request $request)
+    {
+        $iduser = $request->id;
+      
+        $user = User::find($iduser);
+       
+       
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->email_verified_at = date('Y-m-d H:i:s');
+        $user->save();
+        
+
+        return $this->login($request);
+  
+ 
+    }
+
+     protected function etudiantest()
+    {
+   return 'etudiant';
+ 
+    }
+
+
 
 
 
