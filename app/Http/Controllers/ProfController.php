@@ -181,7 +181,8 @@ class ProfController extends BaseController
         }
     }
     public function emailexistUpdate($id , $email){
-        $countemail = User::where(['email'=> $email ,'id'=>$id])->count();
+        $prof= Prof::find($id);
+        $countemail = User::where(['email'=> $email ,'id'=>$prof->user_id])->count();
 
         if ($countemail == 1) {
             return response()->json(['exist' => false]); 
