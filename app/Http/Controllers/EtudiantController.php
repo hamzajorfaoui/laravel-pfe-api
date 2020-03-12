@@ -301,7 +301,7 @@ class EtudiantController extends BaseController
 
 
 
-        $to_name = $request->name;
+        $to_name = $user->etudiant->fullname;
         $to_email = $request->email;
 
     
