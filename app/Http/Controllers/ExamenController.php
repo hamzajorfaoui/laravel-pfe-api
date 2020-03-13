@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\EmploiExamen;
+use Illuminate\Support\Facades\Storage;
 
 use App\Http\Controllers\BaseController as BaseController ;
 class ExamenController extends BaseController
@@ -16,9 +17,10 @@ class ExamenController extends BaseController
      */
     public function index()
     {
-        $examens = EmploiExamen::all();
-
-        return $this->sendResponse($examens->toArray(), 'stores Of user');
+          return response()->json([
+            'EmploiExamens',EmploiExamen::all()
+            ]);
+            
     }
 
     /**
@@ -40,18 +42,10 @@ class ExamenController extends BaseController
     public function store(Request $request)
     {
 
-      $file_src=$request->file("upload_file"); //file src
-      $is_file_uploaded = Storage::disk('dropbox')->put('public-uploads',$file_src);
-     if($is_file_uploaded){
-    return response()->json(['succed' => " good"]);
-     } else {
-     return response()->json(['error' => "err"]); 
-      } 
+                    
+            //$urll = url('/examens/'.  $name);
 
-
-
-
-       /* 
+       
           $id=auth('api')->user()->id;
 
           $user = User::find($id);
@@ -61,17 +55,21 @@ class ExamenController extends BaseController
         if($file = $request->file('emploiExamen')){
             $name = time() . $file->getClientOriginalName();
             $file->move('examens', $name);
-            $emploiExamen->examen = $name;
+            $emploiExamen->examen = '/examens/'. $name;
             $emploiExamen->filiere_id = $request->filiere_id;
             $user->emploiExamens()->save($emploiExamen);
 
-            return response()->json(['succed' => " good"]);
+            
+
+            return response()->json([
+            'EmploiExamens',EmploiExamen::all()
+            ]);
 
             
         }else {
             return response()->json(['error' => "err"]);  
             
-        }*/
+        }
     }
 
     /**
@@ -106,23 +104,45 @@ class ExamenController extends BaseController
      */
     public function update(Request $request, $id)
     {
+       
+
+         
+    }
+
+
+
+
+
+    public function modifiy(Request $request, $id)
+    {
         $idu=auth('api')->user()->id;
 
         $user = User::find($idu);
         
         $emploiExamen = EmploiExamen::find($id);
 
-        if($file = $request->file('emploiExamenn')){
+        if($file = $request->file('emploiExamen')){
+            unlink(public_path() . $emploiExamen->examen);
+
             $name = time() . $file->getClientOriginalName();
             $file->move('examens', $name);
-            $emploiExamen->examen = $name;
-            $emploiExamen->update();
+            $emploiExamen->examen = '/examens/'. $name;
+             
+             $emploiExamen->filiere_id = $request->filiere_id;
+             
+             $user->emploiExamens()->save($emploiExamen);
+         
 
-            return response()->json(['succed' => "updated good"]);
+        
+
+          return response()->json([
+            'EmploiExamens',EmploiExamen::all()
+            ]);
 
             
         }else {
-            return response()->json(['error' => "err up"]);  
+            $file = $request->file('emploiExamen');
+            return response()->json(['error' =>$file->getClientOriginalName()]);  
             
         }
 

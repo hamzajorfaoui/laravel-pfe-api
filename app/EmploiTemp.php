@@ -3,10 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+ use SoftDeletes;
 class EmploiTemp extends Model
 {
-    use SoftDeletes;
+   
     
     protected $fillable = [
         'temp','filiere_id'

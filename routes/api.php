@@ -25,7 +25,7 @@ Route::post('etudiant/login', 'EtudiantController@login');
 Route::post('etudiant/sendcodetoemail', 'EtudiantController@sendcodetoemail');
 Route::post('etudiant/verfiyemail', 'EtudiantController@verfiyemail');
 Route::post('etudiant/upetudiant', 'EtudiantController@upetudiant');
-
+    
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('refresh','AuthController@refresh');
@@ -55,14 +55,18 @@ Route::group(['middleware' => ['jwt.verify']], function() {
                      ]);
 
     Route::resources([
-    'examen'=> 'ExamenController',
+    
     'temps'=> 'TempController',
     'annonce'=>'AnnoncesController',
     'matiere' => 'MatiereController',
-    
+    'examen'=> 'ExamenController',
     'actualite' => 'ActualiteController'
 
     ]);
+
+     Route::post('examen/modify/{id}','ExamenController@modifiy');
+     Route::post('temps/modify/{id}','TempController@modifiy');
+
     Route::get('filier/matieres/{id}','MatiereController@matiersbyfilier');
     
     Route::get('departements','DepartementController@departementwithfiliers');
@@ -72,6 +76,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 });
 Route::group(['middleware' => ['jwt.etudiant']], function() {
 
-   Route::post('etudiant/etudiantest', 'EtudiantController@etudiantest');
+   Route::post('etudiant/etudiantest', '@etudiantest');
+   Route::get('etud_actualite/byfillier', 'ActualiteController@actualitesbyfillier');
+   Route::get('etud_annonce/byfillier', 'AnnoncesController@anoncesbyfillier');
+   Route::get('etud_myprofile', 'EtudiantController@myprofile');
    
 });

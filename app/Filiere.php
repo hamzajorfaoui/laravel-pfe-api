@@ -23,7 +23,7 @@ class Filiere extends Model
     }
     public function actualite()
     {
-        return $this->belongsToMany('App\Actualite','actualite_filiers', 'actualite_id', 'filiere_id');
+        return $this->belongsToMany('App\Actualite','actualite_filiers', 'filiere_id', 'actualite_id');
     }
 }
 

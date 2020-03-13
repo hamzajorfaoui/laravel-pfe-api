@@ -16,7 +16,7 @@ use JWTFactory;
 use JWTAuth;
 use Validator;
 use Response;
-
+use App\Http\Resources\ProfileCollection;
 use App\Http\Controllers\BaseController as BaseController ;
 class EtudiantController extends BaseController
 {
@@ -304,14 +304,22 @@ class EtudiantController extends BaseController
         $to_name = $user->etudiant->fullname;
         $to_email = $request->email;
 
-    
-         Mail::send('emails.mail', ['name' => $to_name, 'verification_code' => $verification_code], function($message) use ($to_name, $to_email) {
+         $cmpt = User::where('email',$to_email)->count();
+         if ($cmpt == 0) {
+              Mail::send('emails.mail', ['name' => $to_name, 'verification_code' => $verification_code], function($message) use ($to_name, $to_email) {
              $message->to($to_email)
                      ->subject('Artisans Web Testing Mail');
              $message->from('estsupp@gmail.com');
           });
 
            return 'email verfication sended';
+         }else {
+             return 'email deja existe';
+         }
+        
+
+    
+        
         }else {
              return 'user not found';
             
@@ -358,9 +366,13 @@ class EtudiantController extends BaseController
  
     }
 
-     protected function etudiantest()
+     protected function myprofile()
     {
-   return 'etudiant';
+
+        $id = auth('api')->user()->id;
+        $etudiant = Etudiant::where('user_id',$id)->get();
+        return  ProfileCollection::collection($etudiant) ;
+   
  
     }
 

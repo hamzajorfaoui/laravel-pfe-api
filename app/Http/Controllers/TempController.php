@@ -47,14 +47,18 @@ class TempController extends BaseController
 
           $emploiTemp = new EmploiTemp;
 
-        if($file = $request->file('emploiExamen')){
+        if($file = $request->file('emploitemp')){
             $name = time() . $file->getClientOriginalName();
-            $file->move('examens', $name);
+            $file->move('temps', $name);
+            
             $emploiTemp->filiere_id = $request->filiere_id;
-            $emploiTemp->temp = $name;
+
+            $emploiTemp->temp ='/temps/'. $name;
             $user->emploiTemps()->save($emploiTemp);
 
-            return response()->json(['succed' => " good"]);
+             return response()->json([
+            'EmploiTemps',EmploiTemp::all()
+            ]);
 
             
         }else {
@@ -62,6 +66,42 @@ class TempController extends BaseController
             
         }
     }
+
+
+        public function modifiy(Request $request, $id)
+    {
+        $idu=auth('api')->user()->id;
+
+        $user = User::find($idu);
+      
+        $emploiTemp = EmploiTemp::find($id);
+         
+        if($file = $request->file('emploitemp')){
+            unlink(public_path() . $emploiTemp->temp);
+
+            $name = time() . $file->getClientOriginalName();
+            $file->move('examens', $name);
+             $emploiTemp->temp ='/temps/'. $name;
+             
+             $emploiTemp->filiere_id = $request->filiere_id;
+             
+             $user->emploiTemps()->save($emploiTemp);
+         
+
+        
+
+             return response()->json([
+            'EmploiTemps',EmploiTemp::all()
+            ]);
+            
+        }else {
+           return response()->json(['error' => "err"]);   
+            
+        }
+
+         
+    }
+
 
     /**
      * Display the specified resource.
@@ -83,7 +123,8 @@ class TempController extends BaseController
      */
     public function edit($id)
     {
-        //
+       
+        
     }
 
     /**

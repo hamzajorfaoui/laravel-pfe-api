@@ -155,4 +155,19 @@ class AnnoncesController extends BaseController
 
 
     }
+
+
+    //*******************||   Student Side    ||***********************
+
+
+    public function anoncesbyfillier(){
+         $etudiant = auth('api')->user()->etudiant;
+        
+         $anonces = Annonce::where('filiere_id',$etudiant->filiere_id)->get();
+         return response()->json(['anonces' => $anonces]);
+    
+    }
+
+
+
 }

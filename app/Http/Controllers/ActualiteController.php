@@ -7,6 +7,7 @@ use App\Filiere;
 use App\Matiere;
 use App\User;
 use App\Actualite;
+use App\Image;
 use App\Http\Resources\ActualiteCollection;
 
 class ActualiteController extends Controller
@@ -48,18 +49,29 @@ class ActualiteController extends Controller
         //user
         $idu=auth('api')->user()->id;
         $user = User::find($idu);
+       
+        $actualite = new Actualite;
+
+        if($file = $request->file('req_image')){
+            $name = time() . $file->getClientOriginalName();
+            $file->move('images', $name);
+            $actualite->req_image = '/temps/'. $name;
+        }else {
+            $actualite->req_image = null;
+        }
 
         
         //actualite
-        $actualite = new Actualite;
+       
         $actualite->title = $request->title;
         $actualite->contenu = $request->contenu;
-         $user->actualites()->save($actualite);
+        $user->actualites()->save($actualite);
 
         //table id filiiers
 
 
         $filiers_id = $request->filiers_id;
+        
 
      
         foreach ($filiers_id as $id) {
@@ -69,6 +81,26 @@ class ActualiteController extends Controller
              $actualite->filiers()->save($filiere);
             
         }
+
+
+     if($images = $request->file('image_act')){
+
+         foreach ($images as $image) {
+
+            $imageT = new Image;
+            $name = time() . $image->getClientOriginalName();
+            $image->move('images', $name);
+
+            
+            $imageT->image = '/images/'. $name;
+
+            $actualite->images()->save($imageT);
+            
+        }
+            
+        }
+
+ 
         return $actualite;
     }
 
@@ -111,16 +143,17 @@ class ActualiteController extends Controller
         if($request->contenu != null){
             $actualite->contenu = $request->contenu;
         }
+
+
+
         $actualite->save();
 
         return ActualiteCollection::collection(Actualite::where('id',$actualite->id)->get());
 
     }
-    public function actualitesbyfillier($id_fil){
 
-        // $actualities = Actualite::with('filiere_id',$id_fil)->get();
-        // return ActualiteCollection::collection($actualities);
-    }
+    
+
 
     /**
      * Remove the specified resource from storage.
@@ -134,4 +167,17 @@ class ActualiteController extends Controller
         $actualite->delete();
         return response()->json(['succes' => true]);
     }
+
+
+    //*******************||   Student Side    ||***********************
+
+
+    public function actualitesbyfillier(){
+         $etudiant = auth('api')->user()->etudiant;
+         $fili = Filiere::find($etudiant->filiere_id);
+         $act = $fili->actualite()->get();
+         return response()->json(['actualities' => $act]);
+    
+    }
+
 }
