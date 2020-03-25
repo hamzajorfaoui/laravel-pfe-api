@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\EmploiTemp;
+use App\Filiere;
+use App\Semestre;
 
 use App\Http\Controllers\BaseController as BaseController ;
 class TempController extends BaseController
@@ -51,7 +53,23 @@ class TempController extends BaseController
             $name = time() . $file->getClientOriginalName();
             $file->move('temps', $name);
             
+            
+        $filiere = Filiere::find($request->filiere_id);
+        if($filiere == null){
+        return response()->json(['error' => "fillier not exist"]);  
+        }else{
+
             $emploiTemp->filiere_id = $request->filiere_id;
+        }
+
+        $semester = Semestre::find($request->semester_id);
+        if($semester == null){
+        return response()->json(['error' => "semester not exist"]);  
+        }else{
+
+           $emploiTemp->semester_id = $request->semester_id;
+        }
+
 
             $emploiTemp->temp ='/temps/'. $name;
             $user->emploiTemps()->save($emploiTemp);
@@ -68,37 +86,56 @@ class TempController extends BaseController
     }
 
 
-        public function modifiy(Request $request, $id)
+    public function modifiy(Request $request, $id)
     {
         $idu=auth('api')->user()->id;
 
         $user = User::find($idu);
       
         $emploiTemp = EmploiTemp::find($id);
+
+        if ( $emploiTemp != null) {
+            
+        
          
         if($file = $request->file('emploitemp')){
             unlink(public_path() . $emploiTemp->temp);
 
             $name = time() . $file->getClientOriginalName();
-            $file->move('examens', $name);
-             $emploiTemp->temp ='/temps/'. $name;
-             
-             $emploiTemp->filiere_id = $request->filiere_id;
-             
-             $user->emploiTemps()->save($emploiTemp);
-         
-
-        
-
-             return response()->json([
-            'EmploiTemps',EmploiTemp::all()
-            ]);
-            
-        }else {
-           return response()->json(['error' => "err"]);   
+            $file->move('temps', $name);
+            $emploiTemp->temp ='/temps/'. $name;
+                
             
         }
 
+        if ($request->filiere_id != null ) {
+        $filiere = Filiere::find($request->filiere_id);
+        if($filiere == null){
+        return response()->json(['error' => "fillier not exist"]);  
+        }else{
+
+            $emploiTemp->filiere_id = $request->filiere_id;
+        }
+        }
+
+         if ($request->semester_id != null) {
+        $semester = Semestre::find($request->semester_id);
+        if($semester == null){
+        return response()->json(['error' => "semester not exist"]);  
+        }else{
+
+           $emploiTemp->semester_id = $request->semester_id;
+        }
+        }
+       
+
+         $user->emploiTemps()->save($emploiTemp);
+         return response()->json([
+            'EmploiTemps',EmploiTemp::all()
+            ]);
+}else {
+    return response()->json(['error' => "Emplois du temps not found"]);  
+}
          
     }
 

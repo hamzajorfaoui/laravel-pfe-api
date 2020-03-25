@@ -83,7 +83,7 @@ class EtudiantController extends BaseController
         $user->role_id = 3;  
         $filiere = Filiere::find($request->filiere_id);
         if($filiere == null){
-        return response()->json(['error' => "departement not exist"]);  
+        return response()->json(['error' => "fillier not exist"]);  
         }else{
         $etudiant->filiere_id=$request->filiere_id;
          $user->save();

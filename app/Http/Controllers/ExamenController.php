@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\EmploiExamen;
 use Illuminate\Support\Facades\Storage;
+use App\Filiere;
+use App\Semestre;
 
 use App\Http\Controllers\BaseController as BaseController ;
 class ExamenController extends BaseController
@@ -56,7 +58,23 @@ class ExamenController extends BaseController
             $name = time() . $file->getClientOriginalName();
             $file->move('examens', $name);
             $emploiExamen->examen = '/examens/'. $name;
+            
+            $filiere = Filiere::find($request->filiere_id);
+        if($filiere == null){
+        return response()->json(['error' => "fillier not exist"]);  
+        }else{
+
             $emploiExamen->filiere_id = $request->filiere_id;
+        }
+
+        $semester = Semestre::find($request->semester_id);
+        if($semester == null){
+        return response()->json(['error' => "semester not exist"]);  
+        }else{
+
+           $emploiExamen->semester_id = $request->semester_id;
+        }
+
             $user->emploiExamens()->save($emploiExamen);
 
             
@@ -120,7 +138,7 @@ class ExamenController extends BaseController
         $user = User::find($idu);
         
         $emploiExamen = EmploiExamen::find($id);
-
+        if ( $emploiExamen != null) {
         if($file = $request->file('emploiExamen')){
             unlink(public_path() . $emploiExamen->examen);
 
@@ -128,25 +146,36 @@ class ExamenController extends BaseController
             $file->move('examens', $name);
             $emploiExamen->examen = '/examens/'. $name;
              
-             $emploiExamen->filiere_id = $request->filiere_id;
-             
-             $user->emploiExamens()->save($emploiExamen);
-         
-
-        
-
-          return response()->json([
-            'EmploiExamens',EmploiExamen::all()
-            ]);
-
-            
-        }else {
-            $file = $request->file('emploiExamen');
-            return response()->json(['error' =>$file->getClientOriginalName()]);  
             
         }
+        if ($request->filiere_id != null ) {
+        $filiere = Filiere::find($request->filiere_id);
+        if($filiere == null){
+        return response()->json(['error' => "fillier not exist"]);  
+        }else{
 
-         
+            $emploiExamen->filiere_id = $request->filiere_id;
+        }
+        }
+
+         if ($request->semester_id != null) {
+        $semester = Semestre::find($request->semester_id);
+        if($semester == null){
+        return response()->json(['error' => "semester not exist"]);  
+        }else{
+
+           $emploiExamen->semester_id = $request->semester_id;
+        }
+        }
+
+
+         $user->emploiExamens()->save($emploiExamen);
+         return response()->json([
+            'EmploiExamens',EmploiExamen::all()
+            ]);
+}else {
+    return response()->json(['error' => "Emplois du examens not found"]); 
+}
     }
 
     /**

@@ -60,8 +60,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     'annonce'=>'AnnoncesController',
     'matiere' => 'MatiereController',
     'examen'=> 'ExamenController',
-    'actualite' => 'ActualiteController'
-
+    'actualite' => 'ActualiteController',
+    'planing'=>'PlaningController'
     ]);
 
      Route::post('examen/modify/{id}','ExamenController@modifiy');

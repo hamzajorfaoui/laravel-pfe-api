@@ -18,9 +18,12 @@ class CreateEmploiTempsTable extends Migration
             $table->string('temp');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('filiere_id');
+            
             $table->softDeletes();
             $table->timestamps();
 
+
+            
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('filiere_id')->references('id')->on('filieres');
             
