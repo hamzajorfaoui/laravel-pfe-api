@@ -38,6 +38,7 @@ class FillereController extends Controller
     public function store(Request $request)
     {
         $filiere = new Filiere;
+        $filiere->niveau = $request->niveau;
         $filiere->name = $request->name;
         $filiere->departement_id=$request->dept_id;
         $dept = Departement::find($request->dept_id);
@@ -86,7 +87,11 @@ class FillereController extends Controller
         }
         if($request->dept_id != null){
            $filiere->departement_id=$request->dept_id; 
-        } 
+        }
+        if($request->niveau != null){
+          $filiere->niveau = $request->niveau;
+        }  
+         
         $filiere->save();
 
         return FiliereCollection::collection(Filiere::where('id',$filiere->id)->get());;
