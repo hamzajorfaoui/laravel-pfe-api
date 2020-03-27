@@ -17,7 +17,8 @@ class FiliereCollection extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name .' '.$this->niveau,
+            'name' => $this->name ,
+            'niveau'=>$this->niveau,
             'departement_id' => $this->departement_id,
             'deptname' => Departement::find($this->departement_id) ,
             'created_at' => $this->created_at,
