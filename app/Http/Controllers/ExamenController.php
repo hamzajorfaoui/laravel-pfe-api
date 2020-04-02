@@ -8,7 +8,7 @@ use App\EmploiExamen;
 use Illuminate\Support\Facades\Storage;
 use App\Filiere;
 use App\Semestre;
-
+use App\Http\Resources\ExmenCollection;
 use App\Http\Controllers\BaseController as BaseController ;
 class ExamenController extends BaseController
 {
@@ -79,10 +79,7 @@ class ExamenController extends BaseController
 
             
 
-            return response()->json([
-            'EmploiExamens',EmploiExamen::all()
-            ]);
-
+            return ExmenCollection::collection(EmploiExamen::get());
             
         }else {
             return response()->json(['error' => "err"]);  

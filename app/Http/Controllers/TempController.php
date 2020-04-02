@@ -9,7 +9,7 @@ use App\User;
 use App\EmploiTemp;
 use App\Filiere;
 use App\Semestre;
-
+use App\Http\Resources\TempCollection;
 use App\Http\Controllers\BaseController as BaseController ;
 class TempController extends BaseController
 {
@@ -20,9 +20,7 @@ class TempController extends BaseController
      */
     public function index()
     {
-        $temps = EmploiTemp::all();
-
-        return $this->sendResponse($temps->toArray(), 'stores Of user');
+        return TempCollection::collection(EmploiTemp::get());
     }
 
     /**
@@ -74,11 +72,8 @@ class TempController extends BaseController
             $emploiTemp->temp ='/temps/'. $name;
             $user->emploiTemps()->save($emploiTemp);
 
-             return response()->json([
-            'EmploiTemps',EmploiTemp::all()
-            ]);
+             return TempCollection::collection(EmploiTemp::get());
 
-            
         }else {
             return response()->json(['error' => "err"]);  
             
@@ -130,9 +125,8 @@ class TempController extends BaseController
        
 
          $user->emploiTemps()->save($emploiTemp);
-         return response()->json([
-            'EmploiTemps',EmploiTemp::all()
-            ]);
+         return TempCollection::collection(EmploiTemp::get());
+
 }else {
     return response()->json(['error' => "Emplois du temps not found"]);  
 }

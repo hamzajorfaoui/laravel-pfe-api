@@ -19,6 +19,7 @@ class EmploiExamen extends Model
 
     public function getFileAttribute($emploiExamen){
         return $this->uploadex . $emploiExamen;
+        
     }
 
 
