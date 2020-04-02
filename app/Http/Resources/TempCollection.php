@@ -17,10 +17,11 @@ class TempCollection  extends JsonResource
      */
     public function toArray($request)
     {
+        $fill = Filiere::find($this->filiere_id);
         return [
             'id' => $this->id,
             'temp' => $this->temp,
-            'fillier' => Filiere::find($this->filiere_id)->name .' '.Filiere::find($this->filiere_id)->niveau,
+            'fillier' => $fill->name .' '.$fill->niveau,
             'semester' => Semestre::find($this->semester_id)->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
