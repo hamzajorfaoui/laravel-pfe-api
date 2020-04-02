@@ -21,7 +21,7 @@ class ExmenCollection extends JsonResource
         return [
             'id' => $this->id,
             'temp' => $this->examen	,
-            'fillier' => Filiere::find($this->filiere_id)->name,
+            'fillier' => Filiere::find($this->filiere_id)->name.' '.Filiere::find($this->filiere_id)->niveau,
             'semester' => Semestre::find($this->semester_id)->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
