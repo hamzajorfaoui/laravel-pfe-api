@@ -96,7 +96,7 @@ class TempController extends BaseController
         if($file = $request->file('emploitemp')){
             unlink(public_path() . $emploiTemp->temp);
 
-            $name = time() . $file->getClientOriginalName();
+            $name = time() . $file->gebtClientOriginalName();
             $file->move('temps', $name);
             $emploiTemp->temp ='/temps/'. $name;
                 

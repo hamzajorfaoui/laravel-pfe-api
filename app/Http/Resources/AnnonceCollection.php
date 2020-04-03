@@ -21,7 +21,9 @@ class AnnonceCollection extends JsonResource
     public function toArray($request)
     {
         return [
+            
             'id' => $this->id,
+            'is_active' => $this->is_active,
             'date_prevue' => $this->date_prevue,
             'date_auralieu' => $this->date_auralieu,
             'salle' => $this->salle,

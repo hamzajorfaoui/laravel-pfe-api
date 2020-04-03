@@ -52,6 +52,7 @@ class AnnoncesController extends BaseController
         $user = User::find($id);
 
         $annonce = new Annonce;
+        $annonce->is_active           = 1 ;
         $annonce->date_prevue         = $request->date_prevue;
         $annonce->date_auralieu	      = $request->date_auralieu;
         $annonce->salle               = $request->salle;
@@ -167,7 +168,27 @@ class AnnoncesController extends BaseController
          return response()->json(['anonces' => $anonces]);
     
     }
+    public function active($id)
+    {
+        $annonce = Annonce::findOrFail($id);
+        if($annonce != null){
 
+            if($annonce->is_active == 0){
+                $annonce->is_active = 1 ;
+                $annonce->save();
+                return response()->json(['is_active' => true]);
+
+            }
+            if($annonce->is_active == 1){
+                $annonce->is_active = 0 ;
+                $annonce->save();
+                return response()->json(['is_active' => false]);
+            }
+        }else{
+            return response()->json(['error' => "actualite not found"]);
+        }
+        
+    }
 
 
 }

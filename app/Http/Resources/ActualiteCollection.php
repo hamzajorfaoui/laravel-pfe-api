@@ -20,9 +20,8 @@ class ActualiteCollection extends JsonResource
 
 
         return [
-
-           
             'id' => $this->id,
+            'is_active' => $this->is_active,
             'title' => $this->title,
             'contenu' => $this->contenu,
             'req_image' => $this->req_image,

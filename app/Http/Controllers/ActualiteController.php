@@ -51,7 +51,7 @@ class ActualiteController extends Controller
         $user = User::find($idu);
        
         $actualite = new Actualite;
-
+        $actualite->is_active           = 1 ;
         if($file = $request->file('req_image')){
             $name = time() . $file->getClientOriginalName();
             $file->move('images', $name);
@@ -178,6 +178,28 @@ class ActualiteController extends Controller
          $act = $fili->actualite()->get();
          return response()->json(['actualities' => $act]);
     
+    }
+
+    public function active($id)
+    {
+        $actualite = Actualite::findOrFail($id);
+        if($actualite != null){
+
+            if($actualite->is_active == 0){
+                $actualite->is_active = 1 ;
+                $actualite->save();
+                return response()->json(['is_active' => true]);
+
+            }
+            if($actualite->is_active == 1){
+                $actualite->is_active = 0 ;
+                $actualite->save();
+                return response()->json(['is_active' => false]);
+            }
+        }else{
+            return response()->json(['error' => "actualite not found"]);
+        }
+        
     }
 
 }
