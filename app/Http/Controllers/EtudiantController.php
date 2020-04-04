@@ -186,7 +186,20 @@ class EtudiantController extends BaseController
     public function etudiantwithcompte($id){
         
          $etudiant = Etudiant::with('user')->find($id);
-         return $etudiant;
+          $user = User::find($etudiant->user_id);
+
+          if($user->email_verified_at == null){
+
+            $etudiant['user']['pwd'] =  $user->password ;
+           
+            return $etudiant;
+          }else{
+            $etudiant['user']['pwd'] = null ;
+           
+            return $etudiant;
+          }
+
+         
         
     }
 
