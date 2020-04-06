@@ -42,7 +42,7 @@ class AuthController extends Controller
            }
 
         $credentials = request(['email', 'password']);
-        //   JWTAuth::factory()->setTTL(1);
+         
         if (!$token = JWTAuth::attempt($credentials)) {
 
             return response()->json(['error' => 'Email or password does\'t exist'], 401);

@@ -235,6 +235,8 @@ class EtudiantController extends BaseController
             if ($user == null) {
             return response()->json(['error' => 'Email or password does\'t exist'], 401);
             }else {
+                
+
                 return response()->json(['etudiant' => $user] );
             }
 
@@ -246,6 +248,7 @@ class EtudiantController extends BaseController
 
             return response()->json(['error' => 'Email or password does\'t exist'], 401);
         }
+        JWTAuth::factory()->setTTL(3600*24*30);
         return $this->respondWithToken($token);
             
         }
@@ -299,25 +302,32 @@ class EtudiantController extends BaseController
     protected function sendcodetoemail(Request $request)
     {
 
-        $verification_code = Str::random(5);
-
         $iduser = $request->id;
-        $verf = new Verification;
-        $verf->code = $verification_code;
-
         $user = User::find($iduser);
 
+        $verification_code = Str::random(5);
+
+         
+        $verf = new Verification;
+        $verf->code = $verification_code;
+        $verf->email =  $request->email;
 
 
         if ($user != null) {
-           $user->verifications()->save($verf);
 
+        $verftest = Verification::where('user_id','=',$iduser);
+        if( $verftest != null){
 
+            $verftest->delete();
+        }
+
+        $user->verifications()->save($verf);
 
         $to_name = $user->etudiant->fullname;
         $to_email = $request->email;
 
          $cmpt = User::where('email',$to_email)->count();
+
          if ($cmpt == 0) {
               Mail::send('emails.mail', ['name' => $to_name, 'verification_code' => $verification_code], function($message) use ($to_name, $to_email) {
              $message->to($to_email)
@@ -327,7 +337,7 @@ class EtudiantController extends BaseController
 
            return 'email verfication sended';
          }else {
-             return 'email deja existe';
+            return 'email deja existe';
          }
         
 
@@ -347,6 +357,7 @@ class EtudiantController extends BaseController
         $code = $request->code;
         $user = User::find($iduser);
         $verf = Verification::where('user_id',$user->id)->first();
+
        if ($verf == null) {
         return response()->json(['err' => "err"] );
         }
@@ -361,18 +372,25 @@ class EtudiantController extends BaseController
  
     }
 
-    protected function upetudiant(Request $request)
+    public function upetudiant(Request $request)
     {
+        
         $iduser = $request->id;
       
         $user = User::find($iduser);
-       
-       
-        $user->email = $request->email;
+        $verftest = Verification::where('user_id','=',$iduser)->first();
+
+        $user->email = $verftest->email;
+        $request['email'] =  $user->email ;
         $user->password = bcrypt($request->password);
         $user->email_verified_at = date('Y-m-d H:i:s');
         $user->save();
         
+        $verftest = Verification::where('user_id','=',$iduser);
+        if( $verftest != null){
+
+            $verftest->delete();
+        }
 
         return $this->login($request);
   

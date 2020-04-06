@@ -8,7 +8,7 @@ class Verification extends Model
 {
 
         protected $fillable = [
-        'code', 'user_id',
+        'code', 'user_id','email'
     ];
 
     public function user()
