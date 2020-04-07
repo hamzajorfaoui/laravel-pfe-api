@@ -231,6 +231,7 @@ class EtudiantController extends BaseController
 
             $user = User::where('email','=',$request->email)
                         ->where('password','=',$request->password)
+                        ->where('role_id','=',3)
                         ->first();
             if ($user == null) {
             return response()->json(['error' => 'Email or password does\'t exist'], 401);
@@ -241,8 +242,9 @@ class EtudiantController extends BaseController
             }
 
         }else {
+        $request['role_id'] =  3 ;
+        $credentials = request(['email', 'password','role_id']);
 
-        $credentials = request(['email', 'password']);
         //   JWTAuth::factory()->setTTL(1);
         if (!$token = JWTAuth::attempt($credentials)) {
 

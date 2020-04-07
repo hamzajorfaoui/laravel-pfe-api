@@ -40,8 +40,8 @@ class AuthController extends Controller
           
                
            }
-
-        $credentials = request(['email', 'password']);
+        $request['role_id'] =  1 ;
+        $credentials = request(['email', 'password','role_id']);
          
         if (!$token = JWTAuth::attempt($credentials)) {
 
