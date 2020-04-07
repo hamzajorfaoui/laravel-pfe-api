@@ -97,7 +97,7 @@ class ActualiteController extends Controller
             $actualite->images()->save($imageT);
             
         }
-            
+              
         }
 
  
@@ -175,8 +175,8 @@ class ActualiteController extends Controller
     public function actualitesbyfillier(){
          $etudiant = auth('api')->user()->etudiant;
          $fili = Filiere::find($etudiant->filiere_id);
-         $act = $fili->actualite()->get();
-         return response()->json(['actualities' => $act]);
+         $act = $fili->actualite()->with('images')->paginate(10);
+         return  $act;
     
     }
 
