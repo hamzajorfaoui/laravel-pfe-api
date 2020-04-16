@@ -250,17 +250,16 @@ class EtudiantController extends BaseController
 
             return response()->json(['error' => 'Email or password does\'t exist'], 401);
         }
-        JWTAuth::factory()->setTTL(3600*24*30);
+        JWTAuth::factory()->setTTL(70);
         return $this->respondWithToken($token);
             
-        }
-     
+        }    
 
     }
 
         public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth()->user()->etudiant);
     }
     /**
      * Log the user out (Invalidate the token).
@@ -292,8 +291,7 @@ class EtudiantController extends BaseController
     {
 
         return response()->json([
-            'access_token' => $token,
-           
+            'access_token' => $token,           
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL(),
             'user' =>  auth()->user()
@@ -306,10 +304,7 @@ class EtudiantController extends BaseController
 
         $iduser = $request->id;
         $user = User::find($iduser);
-
-        $verification_code = Str::random(5);
-
-         
+        $verification_code = Str::random(5);         
         $verf = new Verification;
         $verf->code = $verification_code;
         $verf->email =  $request->email;
@@ -368,8 +363,6 @@ class EtudiantController extends BaseController
         }else {
             return response()->json(['is_verfied' => false] );
         }
-
-
 
  
     }

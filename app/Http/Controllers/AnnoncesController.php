@@ -165,7 +165,7 @@ class AnnoncesController extends BaseController
          $etudiant = auth('api')->user()->etudiant;
         
          $anonces = Annonce::where('filiere_id',$etudiant->filiere_id)->get();
-         return response()->json(['anonces' => $anonces]);
+         return AnnonceCollection::collection($anonces);
     
     }
     public function active($id)
