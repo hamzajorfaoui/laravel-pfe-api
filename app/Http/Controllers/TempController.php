@@ -185,4 +185,13 @@ class TempController extends BaseController
 
         $emploiTemp->delete();
     }
+    
+    public function emp_etud()
+    {
+        $etudiant = auth('api')->user()->etudiant;
+        $emploiTemp = EmploiTemp::where('filiere_id',$etudiant->filiere_id)->get();
+        return TempCollection::collection($emploiTemp);
+    }
+
+
 }

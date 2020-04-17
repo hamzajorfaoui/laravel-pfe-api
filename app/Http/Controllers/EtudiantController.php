@@ -245,12 +245,12 @@ class EtudiantController extends BaseController
         $request['role_id'] =  3 ;
         $credentials = request(['email', 'password','role_id']);
 
-        //   JWTAuth::factory()->setTTL(1);
+        JWTAuth::factory()->setTTL(60*24*30);
         if (!$token = JWTAuth::attempt($credentials)) {
 
             return response()->json(['error' => 'Email or password does\'t exist'], 401);
         }
-        JWTAuth::factory()->setTTL(70);
+        
         return $this->respondWithToken($token);
             
         }    

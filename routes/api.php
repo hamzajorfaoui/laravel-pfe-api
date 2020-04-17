@@ -82,5 +82,6 @@ Route::group(['middleware' => ['jwt.etudiant']], function() {
    Route::get('etud_actualite/byfillier', 'ActualiteController@actualitesbyfillier');
    Route::get('etud_annonce/byfillier', 'AnnoncesController@anoncesbyfillier');
    Route::get('etud_myprofile', 'EtudiantController@myprofile');
+   Route::get('etud_empt', 'TempController@emp_etud');
    
 });
