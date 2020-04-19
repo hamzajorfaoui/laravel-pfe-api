@@ -259,6 +259,7 @@ class EtudiantController extends BaseController
 
         public function me()
     {
+        
         return response()->json(auth()->user()->etudiant);
     }
     /**
@@ -371,7 +372,6 @@ class EtudiantController extends BaseController
     {
         
         $iduser = $request->id;
-      
         $user = User::find($iduser);
         $verftest = Verification::where('user_id','=',$iduser)->first();
 

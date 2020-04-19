@@ -26,7 +26,7 @@ class Etudiant extends Model
         $data = parent::toArray();
 
         if ($this->filiere ) {
-           $data =  $data +  ['filiere' =>$this->filiere->name];
+           $data =  $data +  ['filiere' =>$this->filiere->name.' '. $this->filiere->niveau];
            $data =  $data +  ['departement' =>$this->filiere->departement->name];
 
 
