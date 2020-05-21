@@ -57,7 +57,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
                      ]);
 
     Route::resources([
-    
+    'absence'=> 'AbsenceController',
     'temps'=> 'TempController',
     'annonce'=>'AnnoncesController',
     'matiere' => 'MatiereController',
@@ -66,8 +66,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     'planing'=>'PlaningController'
     ]);
 
-     Route::post('examen/modify/{id}','ExamenController@modifiy');
-     Route::post('temps/modify/{id}','TempController@modifiy');
+    Route::get('absences','AbsenceController@absences');
+    Route::get('absencesofday','AbsenceController@absencesofday');
+
+    Route::post('examen/modify/{id}','ExamenController@modifiy');
+    Route::post('temps/modify/{id}','TempController@modifiy');
 
     Route::get('filier/matieres/{id}','MatiereController@matiersbyfilier');
     
