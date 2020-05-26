@@ -55,7 +55,7 @@ class ActualiteController extends Controller
         if($file = $request->file('req_image')){
             $name = time() . $file->getClientOriginalName();
             $file->move('images', $name);
-            $actualite->req_image = '/temps/'. $name;
+            $actualite->req_image = '/images/'. $name;
         }else {
             $actualite->req_image = null;
         }

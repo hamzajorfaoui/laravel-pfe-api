@@ -28,6 +28,7 @@ class Etudiant extends Model
         if ($this->filiere ) {
            $data =  $data +  ['filiere' =>$this->filiere->name.' '. $this->filiere->niveau];
            $data =  $data +  ['departement' =>$this->filiere->departement->name];
+           $data =  $data +  ['niveau' =>$this->filiere->niveau];
 
 
         } else {
