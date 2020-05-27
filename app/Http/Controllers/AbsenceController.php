@@ -40,24 +40,32 @@ class AbsenceController extends Controller
         $absence = new Absence;
         $absence->jour           = $request->jour ;
         $absence->semaine         = $request->semaine;
-        $absence->seance	      = $request->seance; 
-
-
+        if(!$request->seance) {
+            return response()->json(['error' => "seances required"]);  
+        }  
+        $seances	      = $request->seance; 
         $semestre = Semestre::find($request->semestre_id);
         $etudiant = Etudiant::find($request->etudiant_id); 
+        if( $etudiant == null || $semestre == null ){
+
+            return response()->json(['error' => "something not exist"]);  
+        }
+  
+        foreach ($seances as $seance) {
+        $absence->seance = $seance;
+        
 
         $absenceer = Absence::where('etudiant_id',$etudiant->id)
         ->where('jour',$request->jour)
+        ->where('seance',$seance)
         ->where('semaine',$request->semaine)
         ->where('semester_id',$request->semestre_id)
-        ->get();
+        ->first();
 
         if( $absenceer != null  ){
             return response()->json(['error' => "already exist"]);  
         }
-        if( $etudiant == null || $semestre == null ){
-        return response()->json(['error' => "something not exist"]);  
-        }
+
         else {
             $absence->semester_id	      = $request->semestre_id; 
             $absence->etudiant_id	      = $request->etudiant_id; 
@@ -66,6 +74,13 @@ class AbsenceController extends Controller
             $absences = Absence::where('etudiant_id',$absence->etudiant_id)->get();
             return $absences;  
         }
+            
+            
+            
+        }
+
+
+        
     }
     /**
      * Display the specified resource.
