@@ -62,23 +62,35 @@ class AbsenceController extends Controller
         ->where('semester_id',$request->semestre_id)
         ->first();
 
-        if( $absenceer != null  ){
-            return response()->json(['error' => "already exist"]);  
-        }
-
-        else {
+        if( $absenceer == null  ){
+            
+       
             $absence->semester_id	      = $request->semestre_id; 
             $absence->etudiant_id	      = $request->etudiant_id; 
             $absence->save();
             
-            $absences = Absence::where('etudiant_id',$absence->etudiant_id)->get();
-            return $absences;  
+           
+        
         }
             
             
             
         }
 
+        $absences = Absence::where('etudiant_id',$etudiant->id)
+        ->where('jour',$request->jour)
+        ->where('semaine',$request->semaine)
+        ->where('semester_id',$request->semestre_id)
+        ->get();
+
+        $se = array();
+        foreach($absences as $absence){
+           
+           
+            array_push($se,$absence->seance);
+            
+        }
+        return response()->json($se); 
 
         
     }
