@@ -37,9 +37,7 @@ class AbsenceController extends Controller
     public function store(Request $request)
     {
         
-        $absence = new Absence;
-        $absence->jour           = $request->jour ;
-        $absence->semaine         = $request->semaine;
+
         if(!$request->seance) {
             return response()->json(['error' => "seances required"]);  
         }  
@@ -52,8 +50,11 @@ class AbsenceController extends Controller
         }
   
         foreach ($seances as $seance) {
+            $absence = new Absence;
         $absence->seance = $seance;
         
+        $absence->jour           = $request->jour ;
+        $absence->semaine         = $request->semaine;
 
         $absenceer = Absence::where('etudiant_id',$etudiant->id)
         ->where('jour',$request->jour)
