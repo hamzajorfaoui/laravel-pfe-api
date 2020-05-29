@@ -69,6 +69,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('absences','AbsenceController@absences');
     Route::get('absencesofday','AbsenceController@absencesofday');
 
+    Route::get('destroyabsence/{id}','AbsenceController@delete');
+
+
     Route::post('examen/modify/{id}','ExamenController@modifiy');
     Route::post('temps/modify/{id}','TempController@modifiy');
 

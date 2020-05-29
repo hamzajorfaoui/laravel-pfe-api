@@ -136,6 +136,7 @@ class AbsenceController extends Controller
     {
         //
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -143,11 +144,19 @@ class AbsenceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        $absence = Absence::find($id);   
+
+        $absence = Absence::where('etudiant_id',$id)
+        ->where('jour',$request->jour)
+        ->where('seance',$request->seance)
+        ->where('semaine',$request->semaine)
+        ->where('semester_id',$request->semestre_id)
+        ->first();
+
+
         if($absence == null){
-            return response()->json(['error' => " not exist"]);
+            return response()->json(['error' => " not found"]);
         }else{
             $absence->delete();
             return response()->json(['succes' => " deleted"]);
