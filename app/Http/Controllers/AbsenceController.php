@@ -171,6 +171,7 @@ class AbsenceController extends Controller
         else{
         $nb_seance = Absence::selectRaw('semester_id,etudiant_id,semaine,jour,count(*) nb_absence')
         ->where('etudiant_id',$etudiant->id)
+        ->groupBy('semester_id')
         ->groupBy('semaine')
         ->groupBy('semester_id')
         ->groupBy('jour')->get();
@@ -209,6 +210,8 @@ class AbsenceController extends Controller
         }
     }
     
+
+
 
 
 }

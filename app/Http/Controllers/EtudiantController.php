@@ -15,6 +15,7 @@ use App\Verification;
 use JWTFactory;
 use JWTAuth;
 use Validator;
+use App\Absence;
 use Response;
 use App\Http\Resources\ProfileCollection;
 use App\Http\Controllers\BaseController as BaseController ;
@@ -400,6 +401,14 @@ class EtudiantController extends BaseController
         return  ProfileCollection::collection($etudiant) ;
    
  
+    }
+
+    public function countseances()
+    {
+        $id = auth('api')->user()->id;
+        $etudiant = Etudiant::where('user_id',$id)->first();
+        $countseances = Absence::where('etudiant_id',$etudiant->id)->count();
+        return response()->json(['countseances' => $countseances]); ;
     }
 
 
