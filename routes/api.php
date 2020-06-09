@@ -84,10 +84,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 });
 Route::group(['middleware' => ['jwt.etudiant']], function() {
     Route::post('etudiant/me', 'EtudiantController@me');
+    
    Route::post('etudiant/etudiantest', '@etudiantest');
    Route::get('etud_actualite/byfillier', 'ActualiteController@actualitesbyfillier');
    Route::get('etud_annonce/byfillier', 'AnnoncesController@anoncesbyfillier');
    Route::get('etud_myprofile', 'EtudiantController@myprofile');
    Route::get('etud_empt', 'TempController@emp_etud');
+   Route::get('countseances', 'EtudiantController@countseances');
    
 });
