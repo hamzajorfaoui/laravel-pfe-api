@@ -23,15 +23,14 @@ class ProfileCollection  extends JsonResource
 
     public function toArray($request)
     {
-               return [
-            'id' => $this->id,
+        $filiere =Filiere::find($this->filiere_id);
+        return [
+            // 'id' => $this->id,
             'fullname' => $this->fullname,
             'cin' => $this->cin,
             'cne' => $this->cne,
-            'fillier' => Filiere::find($this->filiere_id)->name,
+            'fillier' => $filiere->name." ".$filiere->niveau,
             'email' => User::find($this->user_id)->email,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }
